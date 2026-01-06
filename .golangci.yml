@@ -1,0 +1,54 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - misspell
+    - unconvert
+    - gocritic
+    - revive
+    - prealloc
+
+linters-settings:
+  govet:
+    enable:
+      - shadow
+  gocritic:
+    disabled-checks:
+      - ifElseChain  # Allow if-else chains for readability in some cases
+  revive:
+    rules:
+      - name: blank-imports
+      - name: context-as-argument
+      - name: dot-imports
+      - name: error-return
+      - name: error-strings
+      - name: error-naming
+      - name: exported
+        disabled: true  # Disable stuttering check (encode.EncodeError is clearer than encode.Error)
+      - name: increment-decrement
+      - name: var-naming
+      - name: range
+      - name: receiver-naming
+      - name: unexported-return
+      - name: indent-error-flow
+      - name: errorf
+
+issues:
+  exclude-rules:
+    # Exclude test files from most linters
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gocritic
+        - revive
+        - prealloc
+        - govet
+    # Allow unchecked errors for Close and SetDeadline in mllp package
+    - path: mllp/
+      text: "Error return value of .*(Close|SetDeadline|SetReadDeadline|SetWriteDeadline).*is not checked"
+      linters:
+        - errcheck
