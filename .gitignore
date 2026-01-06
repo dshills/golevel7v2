@@ -1,0 +1,14 @@
+# Coverage files
+coverage.out
+coverage.html
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
+# Binary
+*.exe
